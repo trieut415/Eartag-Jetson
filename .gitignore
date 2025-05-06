@@ -1,0 +1,39 @@
+# Ignore Python virtual environments
+labby-eartag/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode settings (if using)
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Model artifacts
+# *.engine
+# *.onnx
+*.pt
+
+# Environment files
+.env
+*.env
+
+# Python package directories
+build/
+dist/
+*.egg-info/
+
