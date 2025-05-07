@@ -14,17 +14,14 @@ def find_project_root():
             raise RuntimeError("Could not locate project root")
         cur = parent
 
-# ——— set up absolute paths ———
+# Define paths
 BASE_DIR      = find_project_root()
 RESOURCES_DIR = os.path.join(BASE_DIR, "resources")
 model_path    = os.path.join(RESOURCES_DIR, "detection_model.pt")
 engine_path   = os.path.join(RESOURCES_DIR, "detection_model.engine")
-video_path    = os.path.join(RESOURCES_DIR, "cow_video_test.mp4")
-# ————————————————————————
 
-# load & export if needed
+# Load and export to TensorRT if needed
 model = YOLO(model_path)
-
 if not os.path.exists(engine_path):
     print("[INFO] Exporting model to TensorRT engine…")
     export_result = model.export(format="engine")
@@ -34,49 +31,48 @@ if not os.path.exists(engine_path):
 else:
     print(f"[INFO] TensorRT engine already exists at '{engine_path}'. Skipping export.")
 
-# load the TensorRT engine
+# Load the TensorRT model
 trt_model = YOLO(engine_path, task="detect")
 
-# open video file
-cap = cv2.VideoCapture(video_path)
-if not cap.isOpened():
-    raise RuntimeError(f"Could not open video: {video_path}")
+# Start video capture
+cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 4608)  
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2592)   
 
-# grab original fps 
-fps = cap.get(cv2.CAP_PROP_FPS) or 30
-delay = int(1000 / fps)
+# Check actual resolution
+actual_width  = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+actual_height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+print(f"[INFO] Camera resolution: {int(actual_width)}x{int(actual_height)}")
 
-# get video resolution for optional resizing
+# Get max screen resolution (modify if different)
 screen_w, screen_h = 1920, 1080
-
-print(f"[INFO] Playing '{video_path}' at {fps:.2f} FPS")
 
 while True:
     ret, frame = cap.read()
     if not ret:
-        print("[INFO] End of video reached")
+        print("Failed to grab frame")
         break
 
-    # run inference
+    # Run inference
     results = trt_model(frame)
 
-    # annotate
+    # Annotate result
     annotated = results[0].plot()
 
-    # resize if larger than screen
+    # Dynamically resize to fit screen
     h, w = annotated.shape[:2]
-    scale = min(1.0, screen_w / w, screen_h / h)
-    if scale < 1.0:
-        annotated = cv2.resize(annotated, (int(w*scale), int(h*scale)))
+    scale_w = screen_w / w
+    scale_h = screen_h / h
+    scale = min(1.0, scale_w, scale_h)  # Don't upscale
+    resized = cv2.resize(annotated, (int(w * scale), int(h * scale)))
 
-    # show
-    cv2.imshow("Video Detection", annotated)
+    # Display
+    cv2.imshow("Detection Inference", resized)
 
-    # wait according to fps, exit on 'q'
-    if cv2.waitKey(delay) & 0xFF == ord('q'):
-        print("[INFO] Playback interrupted by user")
+    # Press 'q' to quit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# cleanup
+# Clean up
 cap.release()
 cv2.destroyAllWindows()

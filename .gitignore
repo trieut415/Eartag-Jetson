@@ -37,3 +37,6 @@ build/
 dist/
 *.egg-info/
 
+
+# Misc files
+*.deb

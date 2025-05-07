@@ -5,10 +5,26 @@ import cv2
 from ultralytics import YOLO
 import termios
 
-# Load & export (unchanged) …
-model_path = "./resources/detection_model.pt"
+def find_project_root():
+    cur = os.path.abspath(os.getcwd())
+    while True:
+        if (os.path.isdir(os.path.join(cur, "resources"))
+            and os.path.isfile(os.path.join(cur, "requirements.txt"))):
+            return cur
+        parent = os.path.dirname(cur)
+        if parent == cur:
+            raise RuntimeError("Could not locate project root")
+        cur = parent
+
+BASE_DIR      = find_project_root()
+RESOURCES_DIR = os.path.join(BASE_DIR, "resources")
+
+model_path  = os.path.join(RESOURCES_DIR, "detection_model.pt")
+engine_path = os.path.join(RESOURCES_DIR, "detection_model.engine")
+test_image  = os.path.join(RESOURCES_DIR, "cow_image_test.jpg")
+
+
 model = YOLO(model_path)
-engine_path = "./resources/detection_model.engine"
 if not os.path.exists(engine_path):
     print("[INFO] Exporting model to TensorRT engine…")
     export_result = model.export(format="engine")
@@ -18,28 +34,23 @@ if not os.path.exists(engine_path):
 else:
     print(f"[INFO] TensorRT engine already exists at '{engine_path}'. Skipping export.")
 
-trt_model = YOLO(engine_path)
-results = trt_model("./resources/cow_image_test.jpg")
+trt_model = YOLO(engine_path, task="detect")
+results   = trt_model(test_image)
 print("Inference completed, plotting…")
 
-# Annotate & resize
 annotated = results[0].plot()
-resized = cv2.resize(annotated, (640, 480))
-
-# Make a named, resizable window and show
-win = "Detected Eartags"
+resized   = cv2.resize(annotated, (1920, 1080))
+win       = "Detected Eartags"
 cv2.namedWindow(win, cv2.WINDOW_NORMAL)
 cv2.imshow(win, resized)
 
-# Flush any stray key events (so previous ESC presses don’t linger)
 termios.tcflush(sys.stdin, termios.TCIFLUSH)
-print("")
-print("To exit, press Ctrl+C to exit.")
+print("\nTo exit, press Ctrl+C.")
 while True:
-    key = cv2.waitKey(10)  
+    key = cv2.waitKey(10)
     if key != -1:
         print(f"[DEBUG] got keycode: {key}")
-    if key == 27:
+    if key == 27:  # ESC
         break
 
 cv2.destroyAllWindows()
