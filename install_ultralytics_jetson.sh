@@ -13,6 +13,7 @@ sudo apt update
 
 echo "[INFO] Installing Python3 pip..."
 sudo apt install -y python3-pip
+sudo apt install python3.10-venv
 
 echo "[INFO] Creating Python 3.10 virtual environment with system packages..."
 python3 -m venv labby-eartag --system-site-packages
