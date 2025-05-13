@@ -14,6 +14,7 @@ sudo apt update
 echo "[INFO] Installing Python3 pip..."
 sudo apt install -y python3-pip
 sudo apt install python3.10-venv
+sudo apt install -y ccache
 
 echo "[INFO] Creating Python 3.10 virtual environment with system packages..."
 python3 -m venv labby-eartag --system-site-packages
@@ -39,9 +40,9 @@ sudo apt-get install -y libcusparselt0 libcusparselt-dev
 
 echo "[INFO] Installing ONNX Runtime (GPU accelerated)..."
 pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/onnxruntime_gpu-1.20.0-cp310-cp310-linux_aarch64.whl
+pip install pytest paddleocr colorama ffmpeg-python paddlepaddle matplotlib cffi tabulate
+pip install numpy==1.24.4 onnx>=1.12.0 onnxslim>=0.1.46
 
-echo "[INFO] Installing compatible NumPy, ONNX, and ONNXSlim versions..."
-pip install numpy==1.23.5 onnx>=1.12.0 onnxslim>=0.1.46
 
 echo "____________________________________________________"
 echo ""

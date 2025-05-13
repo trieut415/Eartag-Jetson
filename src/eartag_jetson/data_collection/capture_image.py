@@ -1,16 +1,6 @@
 import os
 import cv2
-
-def find_project_root():
-    cur = os.path.abspath(os.getcwd())
-    while True:
-        if (os.path.isdir(os.path.join(cur, "resources"))
-            and os.path.isfile(os.path.join(cur, "requirements.txt"))):
-            return cur
-        parent = os.path.dirname(cur)
-        if parent == cur:
-            raise RuntimeError("Could not locate project root")
-        cur = parent
+from eartag_jetson.common.common_utils import get_logger, find_project_root
 
 # Define paths
 BASE_DIR      = find_project_root()

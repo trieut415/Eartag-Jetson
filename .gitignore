@@ -1,5 +1,6 @@
 # Ignore Python virtual environments
 labby-eartag/
+ocr_venv/
 
 # Byte-compiled / cache files
 __pycache__/
@@ -24,8 +25,8 @@ Thumbs.db
 *.bak
 
 # Model artifacts
-# *.engine
-# *.onnx
+*.engine
+*.onnx
 #*.pt
 
 # Environment files
@@ -40,3 +41,6 @@ dist/
 
 # Misc files
 *.deb
+*.csv
+*.avi
+*.jpg
