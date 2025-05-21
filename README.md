@@ -34,7 +34,7 @@ sudo ./tools/kernel_flash/l4t_initrd_flash.sh --flash-only --massflash 1 --netwo
 ```
 Now you wait for this message, this script can vary from 2~10 minutes long.
 ![Success](src/eartag_jetson/resources/successful_flash.png)
-12. Now you are done with the host computer, connect the J401 to a display using the HDMI connector on the board and finish the initial configuration setup, you should just be able to continue with all options ![setup_desktop](src/eartag_jetson/resources/setup_desktop.png).
+12. Now you are done with the host computer, connect the J401 to a display using the HDMI connector on the board and finish the initial configuration setup, you should just be able to continue with all options ![setup_desktop](src/eartag_jetson/resources/setup_desktop.png)
 13. Now the Jetson should be all set up!
 
 
