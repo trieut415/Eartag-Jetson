@@ -27,6 +27,7 @@ This should install all necessary dependancies to run the pipeline. All scripts 
 ```bash
 python3 Eartag-Jetson/src/eartag_jetson/pipeline/pipeline.py
 ```
+---
 
 ### File Structure Description
 Here is a top level view of the repository. I will describe the purpose of each more in depth under this graph.
