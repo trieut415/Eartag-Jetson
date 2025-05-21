@@ -43,7 +43,40 @@ Houses user interface components for configuring, visualizing, and tuning the sy
 - `tune.py`:
     - Streams a live feed from a camera, and has sliders on the bottom for adjusting the frame edge thresholds to be considered, then displays a vertical line. This is used to determine an appropriate X boundary for ignoring cow ear tags on the very edges of the camera stream. Currently the camera resolution resolution we are using is 4608x2592. Here, 4608 is the width, so sometimes the camera will pick up extra ear tags from the next stall over, which are not in the current ROI.
     - To solve this, adjust the slider until an appropriate value is found that properly captures the cows of interest, but excludes the cows on the edge. After an appropriate threshold is determined, navigate to `Eartag-Jetson/src/eartag-jetson/pipeline/multi_stream_pipeline.py` and change `EDGE_MARGIN`. This will exclude OCR results from 500 PX on both right and left side of the frame. Adjust this to be more exclusive/strict than inclusive in the case that the edge cows may move their head into the frame.
-- 
+
+#### `manual_tests/`
+Holds standalone Python scripts used for debugging or verifying specific features of the system. Examples include:
+- Running OCR or object detection on test images/videos
+- Validating serial communication
+- Manually invoking pipeline steps
+1. `test_detection_image.py`
+    - Runs a quick ear tag detection script without OCR on an image and displays the results.
+2. `test_detection_video.py`
+   - Runs a quick ear tag detection script without OCR on a video and displays the results.
+3. `test_detection_stream.py`
+    - Runs a quick ear tag detection script without OCR on an image and displays the results.
+4. `test_multi_pipeline.py`
+    - Runs the full end-to-end pipeline on multiple input videos simultaneously, and transmits it over UART using the ESP32.
+5. `test_pipeline_no_cls_video.py`
+    - Runs a pipeline test with no classification of blurriness after detection of ear tags. This was a preliminary test to see if classifying whether or not a photo was blurry would contribute to PaddleOCR model performance, since running OCR on blurry images is wasteful. Still could be implemented, but currently would rather have more data samples since this is an additional layer of filtering. 
+6. `test_pipeline_video_cls.py`
+    - Runs a pipeline test with classification of blurriness after detection of ear tags. This was a preliminary test to see if classifying whether or not a photo was blurry would contribute to PaddleOCR model performance, since running OCR on blurry images is wasteful. Still could be implemented, but currently would rather have more data samples since this is an additional layer of filtering.  
+7. `test_single_pipeline.py`
+    - Tests the end-to-end pipeline on a single input video.
+
+#### `src/`
+Contains all of the source code
+#### `src/eartag_jetson/`
+Packaging into this
+#### `src/eartag_jetson/common/`
+#### `src/eartag_jetson/data_collection/`
+#### `src/eartag_jetson/data_collection/saved_frames`
+#### `src/eartag_jetson/data_collection/saved_videos`
+#### `src/eartag_jetson/pipeline`
+#### `src/eartag_jetson/resources`
+
+#### `src/eartag_jetson/
+#### `src/eartag_jetson/
 
 
 
