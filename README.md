@@ -1,5 +1,5 @@
 # Eartag-Jetson
-<img src="src/eartag_jetson/resources/cow_flying.gif" alt="cow flying" width="80%">
+<img src="src/eartag_jetson/resources/cow_flying.gif" alt="cow flying" width="100%">
 This repository contains several pipelines for our Labby x Jetson integration, focused on deploying computer vision models optimized for real-time inference on the Jetson Orin Nano. This guide will be focused on the [Seed Studio J401 Carrier Board](https://www.seeedstudio.com/reComputer-J401-Carrier-Board-for-Jetson-Orin-NX-Orin-Nano-p-5636.html?srsltid=AfmBOooAkb-AXaLjTLzwR_bd8hEQg_XqoU2tUUa1oWQuXeJkGLJrSoZP). 
 
 # Get Started
