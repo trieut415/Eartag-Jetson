@@ -145,7 +145,7 @@ Contains the core processing logic for the application. This includes:
 | Variable             | Meaning                                                                                                                                          |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `TOP_N = N`          | Only the **top N most frequent tags** (after filtering and merging) are retained in the final summary. If there are 4 cows, N = 4.                                          |
-| `MIN_DETECTIONS = N` | N amount of ear tag detections must be present before calling `run_milking_session` N .                           |
+| `MIN_DETECTIONS = N` | N amount of ear tag detections must be present before calling `run_milking_session`. This is tuneable, I use ~75% so for 4 cows (8 eartags), so N = 6.                           |
 | `STREAK_THRESH = N` | Minimum number of **consecutive frames** where a tag must persist to be considered part of an active milking session — helps detect entry/start. Currently using N=50 with a 10fps video -> 5s of low detections.|
 
 2. `stall_detector.py`:
