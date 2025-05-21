@@ -10,6 +10,7 @@ To get started with the hardware setup, please refer to the detailed [Hardware S
 
 
 ## 2. Software Setup
+After setting up the hardware, you may have to download a browser, and navigate to the repository.
 
 ### Clone the Repository
 ```bash
