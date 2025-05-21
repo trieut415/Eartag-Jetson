@@ -14,7 +14,14 @@ You can feel free to follow the original guide, but the condensed steps for this
 ![Recovery Mode](src/eartag_jetson/resources/j401_set_recovery.gif).
 5. Connect a female to female jumper pin to force the device into forced recovery mode by connected the GND and FC Rec pins shown ![here](src/eartag_jetson/resources/jumper.png).
 6. After you have set up dual boot on your host computer, boot into it.
-7. Right click on your desktop, and click `Open in Terminal`, then `lsusb`. Make sure this device ID (For Orin Nano 8GB: 0955:7523 NVidia Corp) shows up ![here](src/eartag_jetson/resources/verify_recovery.png) If it shows up, it is properly connected.
+7. Right click on your desktop, and click `Open in Terminal`, then run `lsusb`.
+
+   Make sure this device ID (For Orin Nano 8GB: 0955:7523 NVidia Corp) shows up:
+
+   ![Here](src/eartag_jetson/resources/verify_recovery.png)
+
+   If it shows up, it is properly connected.
+
 8. You can now remove the recovery wire.
 9. On your host computer in the terminal, install:
 ```bash
