@@ -3,7 +3,7 @@ This repository contains several pipelines for our Labby x Jetson integration, f
 
 ## Assemble Hardware
 1. Install fan onto the Orin Nano computing module, the metal mounting bracket is to be placed on the bottom of the module, and the fan on the top. A video can be found [here](https://www.youtube.com/watch?v=PKADTqkG538).
-2. Unscrew the two computing module mounting screws on the carrier board. They should be on the opposite side of the I/O ports, one is  next to the Control and UART Header, and the other is located next to the CAN Header. See here: ![J401](./src/eartag-jetson/resources/j401.png)
+2. Unscrew the two computing module mounting screws on the carrier board. They should be on the opposite side of the I/O ports, one is  next to the Control and UART Header, and the other is located next to the CAN Header. See here: ![J401](/src/eartag-jetson/resources/j401.png)
 3. Slide in the computing module into the 260 PIN SODIMM until it clicks into place, you may have to move the side clips out of the way before you slide the Orin Nano module in.
 4. Install storage on the bottom of the board in the M.2 KEY M slot
  
