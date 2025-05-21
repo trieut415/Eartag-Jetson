@@ -37,12 +37,17 @@ Eartag-Jetson/
         ├── pipeline/                 # Core detection and processing logic (e.g., stall detector, session management)
         └── resources/                # Static assets (e.g., models, images, fonts) loaded at runtime
 ```
+
+---
+
 #### `dashboard/`
 Houses user interface components for configuring, visualizing, and tuning the system, currently this only contains `tune.py` 
 
 - `tune.py`:
     - Streams a live feed from a camera, and has sliders on the bottom for adjusting the frame edge thresholds to be considered, then displays a vertical line. This is used to determine an appropriate X boundary for ignoring cow ear tags on the very edges of the camera stream. Currently the camera resolution resolution we are using is 4608x2592. Here, 4608 is the width, so sometimes the camera will pick up extra ear tags from the next stall over, which are not in the current ROI.
     - To solve this, adjust the slider until an appropriate value is found that properly captures the cows of interest, but excludes the cows on the edge. After an appropriate threshold is determined, navigate to `Eartag-Jetson/src/eartag-jetson/pipeline/multi_stream_pipeline.py` and change `EDGE_MARGIN`. This will exclude OCR results from 500 PX on both right and left side of the frame. Adjust this to be more exclusive/strict than inclusive in the case that the edge cows may move their head into the frame.
+
+---
 
 #### `manual_tests/`
 Holds standalone Python scripts used for debugging or verifying specific features of the system. Examples include:
@@ -64,35 +69,58 @@ Holds standalone Python scripts used for debugging or verifying specific feature
 7. `test_single_pipeline.py`
     - Tests the end-to-end pipeline on a single input video.
 
+---
+
+
 #### `src/`
-Contains all of the source code
+Contains all the source code for the Eartag-Jetson project. This directory is structured as a Python package and is the root for all application logic.
+
+---
+
 #### `src/eartag_jetson/`
-Packaging into this
+The main Python package for the project. All functional modules—such as data collection, detection pipelines, and utilities—are organized under this namespace. This makes the project importable as a package and promotes modular design.
+
+---
+
 #### `src/eartag_jetson/common/`
+A utility module that contains shared functions and helpers used throughout the codebase. This may include:
+- Logging setup
+- Path resolution functions
+- ESP communication helpers
+- General-purpose utilities for consistent, reusable code
+---
+
 #### `src/eartag_jetson/data_collection/`
-#### `src/eartag_jetson/data_collection/saved_frames`
-#### `src/eartag_jetson/data_collection/saved_videos`
-#### `src/eartag_jetson/pipeline`
-#### `src/eartag_jetson/resources`
+Contains tools and scripts for collecting image and video data from the camera pipeline. This data is often used for debugging, training models, or validating system performance. Scripts here may include logic to save frames during detection events or archive full video sessions.
 
-#### `src/eartag_jetson/
-#### `src/eartag_jetson/
+1. `capture_image.py`:
+    - Takes a image and saves it to saved_frames.
+2. `capture_video.py`:
+    - Takes a image and saves it to saved_videos.
 
+---
 
+#### `src/eartag_jetson/data_collection/saved_frames/`
+A subdirectory that stores individual image frames captured from video streams. These are typically extracted during events of interest (e.g., a cow entering a stall) for later analysis, annotation, or OCR evaluation.
 
+---
 
+#### `src/eartag_jetson/data_collection/saved_videos/`
+Stores video recordings captured during data collection runs. These may include full milking sessions, test videos, or clips used for debugging detection and OCR performance.
 
+---
 
+#### `src/eartag_jetson/pipeline/`
+Contains the core processing logic for the application. This includes:
+- Stall detection logic
+- YOLO object detection and PaddleOCR integration
+- Aggregation of detection results
+- Session control (e.g., starting and ending milking sessions)
 
+1. `pipeline.py`:
+    - Contains the end to end pipeline that detects ear tags and at the end of a milking session uploads results to the Labby backend.
 
-
-
-
-
-
-
-
-Parameters to adjust:
+**Parameters to adjust:**
 
 | Variable             | Meaning                                                                                                                                                                                      |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -106,3 +134,46 @@ Parameters to adjust:
 | `TOP_N = N`          | Only the **top N most frequent tags** (after filtering and merging) are retained in the final summary. If there are 4 cows, N = 4.                                          |
 | `MIN_DETECTIONS = N` | N amount of ear tag detections must be present before calling `run_milking_session` N .                           |
 | `STREAK_THRESH = N` | Minimum number of **consecutive frames** where a tag must persist to be considered part of an active milking session — helps detect entry/start. Currently using N=50 with a 10fps video -> 5s of low detections.|
+
+2. `stall_detector.py`:
+    - Contains the stall detector class for a single stream milking session
+        - Relevant methods:
+            - `wait_for_milking`
+                - Waits until enough tags have been detected to start a milking session
+            - `run_milking_session`
+                - Continuously runs detection and OCR until the end of a milking session, as defined by `min_detections`. 
+                  A session is considered ended when the number of detections drops below a percentage (`end_threshold_ratio`) 
+                  of the peak detection count, and this drop is sustained for a minimum timeout duration (`end_timeout` seconds). The idea of this is if insufficient ear tags have been detected for some period of time, then it will end and upload results.
+
+3. `stall_multi.py`:
+    - Contains the stall detector class for a multi stream milking session
+        - Relevant methods:
+            - `wait_for_milking`
+                - Waits until enough tags have been detected to start a milking session
+            - `run_milking_session`
+                - Continuously runs detection and OCR until the end of a milking session, as defined by `min_detections`. 
+                  A session is considered ended when the number of detections drops below a percentage (`end_threshold_ratio`) 
+                  of the peak detection count, and this drop is sustained for a minimum timeout duration (`end_timeout` seconds). The idea of this is if insufficient ear tags have been detected for some period of time, then it will end and upload results.
+---
+
+#### `src/eartag_jetson/resources/`
+Holds static assets required at runtime by the application. This includes:
+- Trained model files (`.pt`, `.onnx`, `.engine`) for classification, segmentation, and OCR
+- Reference images and GIFs for documentation
+- Fonts (e.g., `times_new_roman.ttf`) for use in rendering overlays or OCR post-processing
+
+These assets are loaded as needed by the application and are kept separate from code for clarity and maintainability.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
