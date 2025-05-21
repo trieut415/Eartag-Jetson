@@ -4,12 +4,12 @@ This repository contains several pipelines for our Labby x Jetson integration, f
 
 # Get Started
 
-## Assemble Hardware
+## 1. Assemble Hardware
 
 To get started with the hardware setup, please refer to the detailed [Hardware Setup Guide](setup_hardware.md).
 
 
-## Software Setup
+## 2. Software Setup
 
 ### Clone the Repository
 ```bash
