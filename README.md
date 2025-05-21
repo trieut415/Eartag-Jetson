@@ -18,18 +18,18 @@ git clone https://github.com/trieut415/Eartag-Jetson.git
 ```
 
 ### Installation
-Run the following script to install, and start the pipeline:
+Run the following script to install all necessary dependancies:
 ```bash
 cd Eartag-Jetson
 chmod +x setup_dependancies.sh
 ./setup_dependancies.sh
 ```
 
-Then activate the virtual environment containting all dependancies:
+Activate the virtual environment:
 ```bash
 source labby-eartag/bin/activate
 ```
-This should install all necessary dependancies to run the pipeline. All scripts below can be ran with `python3 /path/to/python/file`. For example:
+All scripts below can be ran with `python3 /path/to/python/file`. For example:
 ```bash
 python3 Eartag-Jetson/src/eartag_jetson/pipeline/pipeline.py
 ```
