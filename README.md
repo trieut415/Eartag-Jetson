@@ -30,7 +30,7 @@ python3 Eartag-Jetson/src/eartag_jetson/pipeline/pipeline.py
 ---
 
 ### File Structure Description
-Here is a top level view of the repository. I will describe the purpose of each more in depth under this graph.
+Here is a top level view of the repository. I will describe the purpose of each more in depth under this graph. This will provide you all insights on what each file does, and the relevant parameters to adjust and fine tune.
 ```bash
 Eartag-Jetson/
 ├── dashboard/                        # Streamlit or other UI components for visualization, tuning, or configuration
