@@ -10,16 +10,50 @@ To get started with the hardware setup, please refer to the detailed [Hardware S
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/trieut415/labby-hailo.git
+git clone https://github.com/trieut415/Eartag-Jetson.git
 ```
 
 ### Installation
 Run the following script to install, and start the pipeline:
 ```bash
-cd labby-hailo
-chmod +x labby-hailo-setup.sh
-./labby-hailo-setup.sh
+cd Eartag-Jetson
+chmod +x setup_dependancies.sh
+./setup_dependancies.sh
 ```
+This should install all necessary dependancies.
+
+### File Structure Description
+```bash
+Eartag-Jetson/
+├── build
+│   ├── bdist.linux-aarch64
+│   └── lib
+│       └── eartag_jetson
+│           ├── common
+│           ├── data_collection
+│           ├── pipeline
+│           └── resources
+├── dashboard
+│   └── config
+├── manual_tests
+├── src
+│   ├── eartag_jetson
+│   │   ├── common
+│   │   │   └── __pycache__
+│   │   ├── data_collection
+│   │   │   ├── __pycache__
+│   │   │   ├── saved_frames
+│   │   │   └── saved_videos
+│   │   ├── pipeline
+│   │   │   └── __pycache__
+│   │   ├── __pycache__
+│   │   └── resources
+│   └── eartag_jetson.egg-info
+└── tests
+    └── __pycache__
+```
+
+
 Parameters to adjust:
 
 | Variable             | Meaning                                                                                                                                                                                      |
