@@ -8,8 +8,8 @@ logger = get_logger(__name__)
 # ─── DEFINE PATHS ───────────────────────────────────────────────────────────────
 BASE_DIR      = find_project_root()
 RESOURCES_DIR = os.path.join(BASE_DIR, "src", "eartag_jetson", "resources")
-model_path    = os.path.join(RESOURCES_DIR, "detection_model.pt")
-engine_path   = os.path.join(RESOURCES_DIR, "detection_model.engine")
+model_path    = os.path.join(RESOURCES_DIR, "seg_model.pt")
+engine_path   = os.path.join(RESOURCES_DIR, "seg_model.engine")
 
 # ─── EXPORT TO TENSORRT IF NEEDED ────────────────────────────────────────────────
 model_pt = YOLO(model_path)

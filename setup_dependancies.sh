@@ -17,10 +17,10 @@ sudo apt install python3.10-venv
 sudo apt install -y ccache
 
 echo "[INFO] Creating Python 3.10 virtual environment with system packages..."
-python3 -m venv labby-eartag --system-site-packages
+python3 -m venv labby-eartags --system-site-packages
 
 echo "[INFO] Activating virtual environment..."
-source labby-eartag/bin/activate
+source labby-eartags/bin/activate
 
 echo "[INFO] Upgrading pip..."
 pip install -U pip
@@ -40,8 +40,10 @@ sudo apt-get install -y libcusparselt0 libcusparselt-dev
 
 echo "[INFO] Installing ONNX Runtime (GPU accelerated)..."
 pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/onnxruntime_gpu-1.20.0-cp310-cp310-linux_aarch64.whl
-pip install pytest paddleocr colorama ffmpeg-python paddlepaddle matplotlib cffi tabulate
+pip install pytest colorama ffmpeg-python matplotlib cffi tabulate pyserial ultralytics
+pip install paddleocr==2.10.0 paddlepaddle==3.0.0
 pip install numpy==1.24.4 onnx>=1.12.0 onnxslim>=0.1.46
+pip install .
 
 
 echo "____________________________________________________"
@@ -49,5 +51,5 @@ echo ""
 echo "Ultralytics environment setup complete."
 echo "Run the following to activate the environment in future sessions:"
 echo ""
-echo "  source ~/Desktop/Eartag-Jetson/labby-eartag/bin/activate"
+echo "  source /labby-eartag/bin/activate"
 echo ""

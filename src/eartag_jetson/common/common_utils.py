@@ -1,24 +1,58 @@
 # src/eartag_jetson/common/common_utils.py
+import os
 import logging
 from pathlib import Path
 from typing import Sequence, Union
-import os
 import shutil
 from ultralytics import YOLO
 import torch
+from colorama import Fore, Style, init
+from datetime import datetime, timezone
+from serial import SerialException, SerialTimeoutException
+import json
+import logging
+from logging import Logger
+
+init(autoreset=True)
+
+from colorama import Fore, Style
+import logging
+
+class ColorFormatter(logging.Formatter):
+    def format(self, record):
+        level_color = {
+            "DEBUG": Fore.BLUE,
+            "INFO": Fore.GREEN,
+            "WARNING": Fore.YELLOW,
+            "ERROR": Fore.RED,
+            "CRITICAL": Fore.RED + Style.BRIGHT,
+        }.get(record.levelname, "")
+
+        fmt = (
+            f"{Fore.WHITE}[%(asctime)s]{Style.RESET_ALL} "
+            f"{level_color}[%(levelname)s]{Style.RESET_ALL} "
+            f"{Fore.YELLOW}[%(processName)s]{Style.RESET_ALL} "
+            f"{Fore.CYAN}%(filename)s{Style.RESET_ALL} "
+            f"- %(message)s"
+        )
+        formatter = logging.Formatter(fmt, datefmt="%Y-%m-%d %H:%M:%S")
+        return formatter.format(record)
 
 def get_logger(name: str = __name__, level: int = logging.INFO) -> logging.Logger:
-    """
-    Return a logger that logs to stdout with a standard format.
-    """
     logger = logging.getLogger(name)
-    if not logger.handlers:
-        handler = logging.StreamHandler()
-        fmt = "%(asctime)s %(name)s %(levelname)s: %(message)s"
-        handler.setFormatter(logging.Formatter(fmt))
-        logger.addHandler(handler)
     logger.setLevel(level)
+    logger.propagate = False
+
+    # clear any old handlers so you don’t double-log
+    if logger.hasHandlers():
+        logger.handlers.clear()
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(ColorFormatter())
+    logger.addHandler(handler)
+
     return logger
+
 
 def find_project_root(
     marker_files: Union[str, Sequence[str]] = ("pyproject.toml", "setup.py")
@@ -68,3 +102,32 @@ def export_yolo_to_engine(model, engine_path, logger=None):
     else:
         logger.info(f"Engine already exists at '{engine_path}', skipping export.")
 
+def send_over_esp(ser, password: str, ble_code: str, tags_lr: list[str], end_ts: float, logger: Logger):
+    """
+    Build and transmit the JSON payload over an open serial port.
+    Only the top 4 ear‑tags (by count) are included.
+    """
+    ear_tag_str = ", ".join(tags_lr)            # preserve caller’s order
+
+    # ISO‑8601 timestamp in UTC (milliseconds precision)
+    iso_time = (
+        datetime.fromtimestamp(end_ts, timezone.utc)
+        .isoformat(timespec="milliseconds")
+        .replace("+00:00", "Z")
+    )
+
+    SERIAL_PORT    = "/dev/ttyACM0"
+    BAUD_RATE      = 115200
+    payload = {
+        "password": password,
+        "ble_code": ble_code,
+        "time": iso_time,
+        "ear_tag": ear_tag_str,
+    }
+
+    try:
+        ser.write((json.dumps(payload) + "\n").encode("utf-8"))
+        ser.flush()
+        logger.info(f"Sent to ESP32 ({ble_code}): {payload}")
+    except (SerialTimeoutException, SerialException) as e:
+        logger.error(f"Serial write error: {e}")

@@ -9,11 +9,13 @@ from eartag_jetson.common.common_utils import (
     export_yolo_to_engine,
 )
 
+logger = get_logger(__name__)
+
 # ─── SET PATHS ────────────────────────────────────────────────────────────────
 BASE_DIR      = find_project_root()
 RESOURCES_DIR = os.path.join(BASE_DIR, "src", "eartag_jetson", "resources")
-model_path    = os.path.join(RESOURCES_DIR, "detection_model.pt")
-engine_path   = os.path.join(RESOURCES_DIR, "detection_model.engine")
+model_path    = os.path.join(RESOURCES_DIR, "seg_model.pt")
+engine_path   = os.path.join(RESOURCES_DIR, "seg_model.engine")
 test_image    = os.path.join(BASE_DIR, "src", "eartag_jetson", "data_collection", "saved_frames", "frame13.jpg")
 
 # ─── EXPORT TO TENSORRT IF NEEDED ─────────────────────────────────────────────
@@ -34,7 +36,7 @@ cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
 cv2.imshow(window_name, resized)
 
 termios.tcflush(sys.stdin, termios.TCIFLUSH)
-logger.info("To exit, press ESC.")
+logger.info("To exit, press ESC or Ctrl+C in terminal.")
 
 while True:
     key = cv2.waitKey(10)

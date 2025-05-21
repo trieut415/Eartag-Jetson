@@ -9,7 +9,7 @@ from collections import defaultdict
 from eartag_jetson.common.common_utils import (
     find_project_root, get_logger, send_over_esp
 )
-from eartag_jetson.pipeline.stall_detector import StallDetector
+from eartag_jetson.pipeline.stall_multi import StallMultiDetector
 
 # ─── CONSTANTS ────────────────────────────────────────────────────────────────
 BLE_CODES      = ["MM2502V0003FMT", "MM2502V0007FMT"]
@@ -46,7 +46,7 @@ def process_stream(video_path: str, password: str, ble_code: str):
         return
 
     # ─── instantiate detector ────────────────────────────────────────────────
-    detector = StallDetector(
+    detector = StallMultiDetector(
         caps={0: cap},
         api_endpoint="",
         min_detections=MIN_DETECTIONS,
