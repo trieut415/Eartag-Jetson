@@ -11,9 +11,9 @@ This repository contains several pipelines for our Labby x Jetson integration, f
 You can feel free to follow the original guide, but the condensed steps for this specific setup, Jetpack 6.2 w/ the J401 are here.
 1. To do this, you need a Ubuntu Host Computer running Ubuntu 22.04, for this I set up my Windows computer to dual-boot into Ubuntu22.04. There are many youtube videos on how to do this, here is [one](https://www.youtube.com/watch?v=mXyN1aJYefc&t=1s).
 2. Here is a quick overview of what to do, but I will lay it out step by step after.
-![Recovery Mode](src/eartag-jetson/resources/j401_set_recovery.gif).
+![Recovery Mode](src/eartag_jetson/resources/j401_set_recovery.gif).
 3. After you have set up dual boot, boot into it. 
-4. Connect a female to female jumper pin to force the device into forced recovery mode by connected the GND and FC Rec pins shown ![here](src/eartag-jetson/resources/jumper.png).
+4. Connect a female to female jumper pin to force the device into forced recovery mode by connected the GND and FC Rec pins shown ![here](src/eartag_jetson/resources/jumper.png).
 5. 
 
 ## Setup
