@@ -23,7 +23,10 @@ cd Eartag-Jetson
 chmod +x setup_dependancies.sh
 ./setup_dependancies.sh
 ```
-This should install all necessary dependancies to run the pipeline.
+This should install all necessary dependancies to run the pipeline. All scripts below can be ran with `python3 /path/to/python/file`. For example:
+```bash
+python3 Eartag-Jetson/src/eartag_jetson/pipeline/pipeline.py
+```
 
 ### File Structure Description
 Here is a top level view of the repository. I will describe the purpose of each more in depth under this graph.
@@ -81,7 +84,7 @@ Contains all the source code for the Eartag-Jetson project. This directory is st
 ---
 
 #### `src/eartag_jetson/`
-The main Python package for the project. All functional modules—such as data collection, detection pipelines, and utilities—are organized under this namespace. This makes the project importable as a package and promotes modular design.
+The main Python package for the project. All functional modules—such as data collection, detection pipelines, and utilities—are organized under this namespace. This makes the project importable as a package.
 
 ---
 
